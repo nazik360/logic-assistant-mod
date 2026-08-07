@@ -1,21 +1,54 @@
 package ai.logicassistant;
 
-import arc.Events;
-import arc.util.Log;
-import mindustry.game.EventType.ClientLoadEvent;
-import mindustry.mod.Mod;
+import arc.scene.ui.Dialog;
+import arc.scene.ui.TextArea;
+import arc.scene.ui.TextButton;
 
-public class LogicAssistantMod extends Mod {
+public final class LogicAssistantUI {
 
-    public LogicAssistantMod() {
-        Log.info("[Logic Assistant] Mod loaded!");
+    private LogicAssistantUI() {
+    }
 
-        Events.on(ClientLoadEvent.class, event -> {
-            Log.info("[Logic Assistant] Ready.");
+    public static void show() {
+        Dialog dialog = new Dialog("Logic Assistant");
 
-            // Временная проверка UI.
-            // Откроем помощника после загрузки клиента.
-            LogicAssistantUI.show();
+        TextArea request = new TextArea("");
+        request.setMessageText("Например: сделай процессор для сортировки меди...");
+
+        dialog.cont.add(request)
+                .growX()
+                .height(120f)
+                .row();
+
+        TextButton generate = new TextButton("Сгенерировать");
+        TextButton close = new TextButton("Закрыть");
+
+        dialog.cont.add(generate)
+                .pad(5f)
+                .row();
+
+        dialog.cont.add(close)
+                .pad(5f)
+                .row();
+
+        generate.clicked(() -> {
+            String result = LogicCodeGenerator.generate(request.getText());
+
+            Dialog resultDialog = new Dialog("Результат");
+            TextArea output = new TextArea(result);
+
+            resultDialog.cont.add(output)
+                    .grow()
+                    .minWidth(500f)
+                    .minHeight(300f);
+
+            resultDialog.addCloseButton();
+            resultDialog.show();
         });
+
+        close.clicked(dialog::hide);
+
+        dialog.addCloseButton();
+        dialog.show();
     }
 }
