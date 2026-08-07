@@ -3,8 +3,6 @@ package ai.logicassistant;
 import arc.scene.ui.Dialog;
 import arc.scene.ui.TextArea;
 import arc.scene.ui.TextButton;
-import arc.scene.ui.layout.Table;
-import mindustry.ui.Styles;
 
 public final class LogicAssistantUI {
 
@@ -15,19 +13,23 @@ public final class LogicAssistantUI {
         Dialog dialog = new Dialog("Logic Assistant");
 
         TextArea request = new TextArea("");
-        request.setMessageText("Например: сделай процессор, который сортирует медь...");
+        request.setMessageText("Например: сделай процессор для сортировки меди...");
 
-        dialog.cont.add(request).growX().height(120f).row();
+        dialog.cont.add(request)
+                .growX()
+                .height(120f)
+                .row();
 
-        Table buttons = new Table();
+        TextButton generate = new TextButton("Сгенерировать");
+        TextButton close = new TextButton("Закрыть");
 
-        TextButton generate = new TextButton("Сгенерировать", Styles.tbutton);
-        TextButton close = new TextButton("Закрыть", Styles.tbutton);
+        dialog.cont.add(generate)
+                .pad(5f)
+                .row();
 
-        buttons.add(generate).pad(5f);
-        buttons.add(close).pad(5f);
-
-        dialog.cont.add(buttons).row();
+        dialog.cont.add(close)
+                .pad(5f)
+                .row();
 
         generate.clicked(() -> {
             String result = LogicCodeGenerator.generate(request.getText());
@@ -35,6 +37,21 @@ public final class LogicAssistantUI {
             Dialog resultDialog = new Dialog("Результат");
             TextArea output = new TextArea(result);
 
+            resultDialog.cont.add(output)
+                    .grow()
+                    .minWidth(500f)
+                    .minHeight(300f);
+
+            resultDialog.addCloseButton();
+            resultDialog.show();
+        });
+
+        close.clicked(dialog::hide);
+
+        dialog.addCloseButton();
+        dialog.show();
+    }
+}
             resultDialog.cont.add(output)
                     .grow()
                     .minWidth(500f)
