@@ -1,0 +1,17 @@
+package ai.logicassistant;
+
+import arc.Events;
+import arc.util.Log;
+import mindustry.game.EventType.ClientLoadEvent;
+import mindustry.mod.Mod;
+
+public class LogicAssistantMod extends Mod {
+
+    public LogicAssistantMod() {
+        Log.info("[Logic Assistant] Mod loaded!");
+
+        Events.on(ClientLoadEvent.class, event -> {
+            Log.info("[Logic Assistant] Ready.");
+        });
+    }
+}
