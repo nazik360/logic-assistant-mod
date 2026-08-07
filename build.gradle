@@ -1,0 +1,126 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.diffplug.spotless' version '6.20.0'
+}
+
+group = 'ai.logicassistant'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://www.jitpack.io" }
+}
+
+dependencies {
+    // Mindustry v159.7 и Arc
+    compileOnly "com.github.Anuken.Mindustry:core:v159.7"
+    compileOnly "com.github.Anuken.Arc:arc-core:v159.7"
+    compileOnly "com.github.Anuken.Arc:backends-lwjgl3:v159.7"
+}
+
+// Проверка формата кода
+spotless {
+    java {
+        googleJavaFormat('1.15.0')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+    }
+}
+
+// Основная задача сборки
+jar {
+    archiveFileName = "logic-assistant-mod-${version}.jar"
+    archiveBaseName = "logic-assistant-mod"
+    
+    manifest {
+        attributes(
+            'Implementation-Title': 'Logic Assistant',
+            'Implementation-Version': version,
+            'Specification-Vendor': 'AI Dev',
+            'Built-By': System.getProperty('user.name'),
+            'Built-Date': new Date().format('yyyy-MM-dd HH:mm:ss')
+        )
+    }
+    
+    from {
+        configurations.runtimeClasspath.collect { 
+            it.isDirectory() ? it : zipTree(it) 
+        }
+    }
+}
+
+// Задача для копирования в локальные моды
+task deployLocal {
+    dependsOn jar
+    doLast {
+        // Linux/macOS
+        String modsDir = System.getProperty('os.name').toLowerCase().contains('win') ?
+            System.getenv('APPDATA') + '\\.mindustry\\mods' :
+            System.getProperty('user.home') + '/.local/share/Mindustry/mods'
+        
+        File targetDir = new File(modsDir)
+        
+        if (targetDir.exists()) {
+            File sourceJar = jar.archiveFile.get().asFile
+            File targetJar = new File(targetDir, sourceJar.name)
+            
+            Files.copy(sourceJar.toPath(), targetJar.toPath(),
+                StandardCopyOption.REPLACE_EXISTING)
+            
+            println "✅ Мод установлен: ${targetJar}"
+        } else {
+            println "⚠️  Папка модов не найдена: ${modsDir}"
+            println "💡 Создай папку вручную и переложи JAR туда"
+        }
+    }
+}
+
+// Задача для полной сборки и развёртывания
+task fullBuild {
+    dependsOn clean, build, deployLocal
+    doLast {
+        println "✅ Полная сборка завершена!"
+    }
+}
+
+// Информация о проекте
+task printInfo {
+    doLast {
+        println """
+        ╔════════════════════════════════════════╗
+        ║  🤖 Logic Assistant Mod v${version}      ║
+        ║  Copilot для Mindustry Logic Processor ║
+        ╚════════════════════════════════════════╝
+        
+        📋 Информация о проекте:
+        • Группа: ${group}
+        • Версия: ${version}
+        • Java: ${java.toolchain.languageVersion.get()}
+        • Mindustry: 159.7+
+        
+        🚀 Команды сборки:
+        • gradle build       - стандартная сборка
+        • gradle deployLocal - установить локально
+        • gradle fullBuild   - сборка + установка
+        • gradle clean       - удалить артефакты
+        
+        📦 Выходные файлы:
+        • build/libs/*.jar   - собранный мод
+        
+        🔧 Конфигурация:
+        • JDK: Java 17+
+        • Gradle: 8.0+
+        • ОС: Linux, Windows, macOS
+        """
+    }
+}
+
+// Запускаем информацию при инициализации
+defaultTasks 'printInfo', 'build'
