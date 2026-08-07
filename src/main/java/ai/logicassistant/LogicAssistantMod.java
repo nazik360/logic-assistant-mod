@@ -12,6 +12,10 @@ public class LogicAssistantMod extends Mod {
 
         Events.on(ClientLoadEvent.class, event -> {
             Log.info("[Logic Assistant] Ready.");
+
+            // Временная проверка UI.
+            // Откроем помощника после загрузки клиента.
+            LogicAssistantUI.show();
         });
     }
 }
