@@ -19,10 +19,7 @@ repositories {
 }
 
 dependencies {
-    // Mindustry v159.7 и Arc
     compileOnly "com.github.Anuken.Mindustry:core:v159.7"
-    compileOnly "com.github.Anuken.Arc:arc-core:v159.7"
-    compileOnly "com.github.Anuken.Arc:backends-lwjgl3:v159.7"
 }
 
 // Проверка формата кода
