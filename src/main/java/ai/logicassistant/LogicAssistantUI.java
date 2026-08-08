@@ -15,21 +15,13 @@ public final class LogicAssistantUI {
         TextArea request = new TextArea("");
         request.setMessageText("Например: сделай процессор для сортировки меди...");
 
-        dialog.cont.add(request)
-                .growX()
-                .height(120f)
-                .row();
+        dialog.cont.add(request).growX().height(120f).row();
 
         TextButton generate = new TextButton("Сгенерировать");
         TextButton close = new TextButton("Закрыть");
 
-        dialog.cont.add(generate)
-                .pad(5f)
-                .row();
-
-        dialog.cont.add(close)
-                .pad(5f)
-                .row();
+        dialog.cont.add(generate).pad(5f).row();
+        dialog.cont.add(close).pad(5f).row();
 
         generate.clicked(() -> {
             String result = LogicCodeGenerator.generate(request.getText());
@@ -37,26 +29,7 @@ public final class LogicAssistantUI {
             Dialog resultDialog = new Dialog("Результат");
             TextArea output = new TextArea(result);
 
-            resultDialog.cont.add(output)
-                    .grow()
-                    .minWidth(500f)
-                    .minHeight(300f);
-
-            resultDialog.addCloseButton();
-            resultDialog.show();
-        });
-
-        close.clicked(dialog::hide);
-
-        dialog.addCloseButton();
-        dialog.show();
-    }
-}
-            resultDialog.cont.add(output)
-                    .grow()
-                    .minWidth(500f)
-                    .minHeight(300f);
-
+            resultDialog.cont.add(output).grow().minWidth(500f).minHeight(300f);
             resultDialog.addCloseButton();
             resultDialog.show();
         });
