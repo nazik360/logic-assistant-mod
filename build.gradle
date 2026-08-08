@@ -25,7 +25,6 @@ dependencies {
 // Проверка формата кода
 spotless {
     java {
-        googleJavaFormat('1.15.0')
         removeUnusedImports()
         trimTrailingWhitespace()
     }
