@@ -1,7 +1,9 @@
-name: logic-assistant
-displayName: Logic Assistant
-author: nazik360
-version: 0.1.0
-description: AI assistant for generating Mindustry Logic mlog code.
-minGameVersion: 159.7
-main: ai.logicassistant.LogicAssistantMod
+{
+  "name": "logic-assistant",
+  "displayName": "Logic Assistant",
+  "author": "nazik360",
+  "version": "0.1.0",
+  "description": "AI assistant for generating Mindustry Logic mlog code.",
+  "minGameVersion": "159.7",
+  "main": "ai.logicassistant.LogicAssistantMod"
+}
