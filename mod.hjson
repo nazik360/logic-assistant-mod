@@ -3,4 +3,6 @@ displayName: Logic Assistant
 author: nazik360
 version: 0.1.0
 description: AI assistant for generating Mindustry Logic mlog code.
-minGameVersion: 159
+minGameVersion: "159.7"
+main: "ai.logicassistant.LogicAssistantMod"
+java: true
