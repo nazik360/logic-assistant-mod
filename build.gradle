@@ -34,6 +34,8 @@ spotless {
 jar {
     archiveFileName = "logic-assistant-mod-${version}.jar"
     archiveBaseName = "logic-assistant-mod"
+
+    from("mod.hjson")
     
     manifest {
         attributes(
