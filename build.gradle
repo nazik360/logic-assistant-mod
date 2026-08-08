@@ -13,6 +13,12 @@ java {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    // Source files contain non-ASCII strings (Cyrillic, emoji); always compile as UTF-8
+    // regardless of the OS locale.
+    options.encoding = 'UTF-8'
+}
+
 repositories {
     mavenCentral()
     maven { url = uri("https://www.jitpack.io") }
